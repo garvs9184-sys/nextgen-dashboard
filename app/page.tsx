@@ -58,31 +58,33 @@ export default async function DashboardPage() {
         <MotionContainer>
           
           {/* Welcome Section */}
-          <div className="mb-8">
-            <MotionItem>
+          <MotionItem>
+            <div className="relative z-10">
               <span className="text-xs font-semibold text-purple-400 uppercase tracking-widest bg-purple-500/10 px-2.5 py-1 rounded-full">AI PLATFORM</span>
               <h1 className="text-2xl md:text-3xl font-bold tracking-tight mt-3 text-neutral-50">Welcome back, Garv!</h1>
               <p className="text-neutral-400 text-sm mt-1 max-w-md">Your server-rendered education pipeline is running butter-smooth.</p>
-              <div className="flex items-center gap-2 text-xs font-medium text-amber-400 bg-amber-500/10 border border-amber-500/20 px-3 py-1.5 rounded-xl w-fit mt-4">
-                <span>🔥</span> 5 Day Learning Streak
-              </div>
-            </MotionItem>
-          </div>
+            </div>
+            <div className="relative z-10 flex items-center gap-2 text-xs font-medium text-amber-400 bg-amber-500/10 border border-amber-500/20 px-3 py-1.5 rounded-xl w-fit mt-4">
+              <span>🔥</span> 5 Day Learning Streak
+            </div>
+          </MotionItem>
 
           {/* Grid Layout for Graph (Left) and Courses (Right) */}
-          <div className="flex flex-col lg:flex-row gap-8">
+          <div className="flex flex-col lg:flex-row gap-8 mt-8">
             
             {/* LEFT: Activity Graph */}
-            <div className="flex-1">
+            <div className="flex-[2]">
               <MotionItem>
                 <div className="bg-neutral-950 p-6 rounded-3xl border border-neutral-900 h-96">
                    <div className="flex justify-between items-center mb-6">
                       <h3 className="text-xs font-semibold tracking-wider text-neutral-500 uppercase">ACTIVITY GRAPH</h3>
                       <Award className="w-4 h-4 text-neutral-500" />
                    </div>
-                   <div className="flex items-end gap-2 h-48 pt-4 px-1">
+                   <div className="flex items-end gap-1.5 h-48 pt-4 px-1">
                       {[40, 70, 55, 90, 35, 80, 95, 60, 45, 85, 100].map((val, idx) => (
-                        <div key={idx} className="flex-1 bg-neutral-800 rounded-t-sm" style={{ height: `${val}%` }} />
+                        <div key={idx} className="flex-1 bg-neutral-800 rounded-t-sm relative group/bar" style={{ height: `${val}%` }}>
+                          <div className="absolute inset-0 bg-gradient-to-t from-purple-600 to-indigo-500 rounded-t-sm opacity-0 group-hover/bar:opacity-100 transition-opacity duration-300" />
+                        </div>
                       ))}
                    </div>
                 </div>
@@ -95,7 +97,7 @@ export default async function DashboardPage() {
                 const IconComponent = iconMap[course.icon_name] || Code;
                 return (
                   <MotionItem key={course.id}>
-                    <div className="bg-neutral-900/50 p-4 rounded-2xl border border-neutral-800 hover:border-neutral-700 transition-all">
+                    <div className="bg-neutral-900/50 p-4 rounded-2xl border border-neutral-800 hover:border-purple-500/30 transition-all">
                       <div className="flex items-center gap-3 mb-3">
                         <div className="p-2 bg-neutral-800 rounded-lg text-purple-400">
                           <IconComponent className="w-4 h-4" />
