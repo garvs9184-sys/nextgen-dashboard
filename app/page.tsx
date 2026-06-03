@@ -3,7 +3,6 @@ import { BookOpen, Code, Layers, Database, LayoutDashboard, Zap } from 'lucide-r
 import { MotionContainer, MotionItem } from './component/Animate';
 import React from 'react';
 
-// Icon Mapping
 const iconMap: Record<string, any> = {
   Code: Code,
   BookOpen: BookOpen,
@@ -12,6 +11,7 @@ const iconMap: Record<string, any> = {
 };
 
 export default async function DashboardPage() {
+  // Data fetch kar rahe hain
   const { data: courses } = await supabase.from('courses').select('*');
 
   return (
@@ -27,7 +27,7 @@ export default async function DashboardPage() {
         </button>
       </nav>
 
-      {/* Main Content */}
+      {/* Main Content Area */}
       <main className="flex-1 p-10 overflow-y-auto">
         <MotionContainer>
           <div className="max-w-6xl mx-auto">
@@ -38,11 +38,9 @@ export default async function DashboardPage() {
                 <p className="text-neutral-400 text-sm mt-1">Your server-rendered education pipeline is running butter-smooth.</p>
               </div>
             </MotionItem>
-          
-            {/* Grid Layout */}
+
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              
-              {/* Activity Graph */}
+              {/* Activity Graph Section */}
               <div className="lg:col-span-2">
                 <MotionItem>
                   <div className="bg-neutral-950 p-8 rounded-3xl border border-neutral-900 h-full">
@@ -56,31 +54,37 @@ export default async function DashboardPage() {
                 </MotionItem>
               </div>
 
-              {/* Course Tiles */}
+              {/* Course Tiles Section */}
               <div className="lg:col-span-1 space-y-4">
                 <h3 className="text-xs font-semibold text-neutral-500 uppercase mb-4">My Courses</h3>
-                {courses?.map((course: any) => {
-                  const Icon = iconMap[course.icon_name] || Code;
-                  return (
-                    <MotionItem key={course.id}>
-                      <div className="bg-neutral-900 p-5 rounded-2xl border border-neutral-800 hover:border-purple-500/50 transition-all cursor-pointer">
-                        <div className="flex items-center gap-3 mb-3">
-                          <div className="p-2 bg-neutral-800 rounded-lg">
-                            <Icon className="w-4 h-4 text-blue-500" />
+                
+                {/* Agar courses empty hain, toh fallback dikhayenge */}
+                {!courses || courses.length === 0 ? (
+                  <p className="text-neutral-600 text-sm">No active courses found.</p>
+                ) : (
+                  courses.map((course: any) => {
+                    const Icon = iconMap[course.icon_name] || Code;
+                    return (
+                      <MotionItem key={course.id}>
+                        <div className="bg-neutral-900 p-5 rounded-2xl border border-neutral-800 hover:border-purple-500/50 transition-all cursor-pointer">
+                          <div className="flex items-center gap-3 mb-3">
+                            <div className="p-2 bg-neutral-800 rounded-lg">
+                              <Icon className="w-4 h-4 text-blue-500" />
+                            </div>
+                            <div>
+                              <h4 className="text-sm font-medium text-neutral-200">{course.title}</h4>
+                              <p className="text-[10px] text-neutral-500">Module Completion</p>
+                            </div>
                           </div>
-                          <div>
-                            <h4 className="text-sm font-medium text-neutral-200">{course.title}</h4>
-                            <p className="text-[10px] text-neutral-500">Module Completion</p>
+                          {/* Blue Progress Line */}
+                          <div className="w-full bg-neutral-800 rounded-full h-1.5">
+                            <div className="bg-blue-500 h-1.5 rounded-full" style={{ width: `${course.progress}%` }} />
                           </div>
                         </div>
-                        {/* Blue Progress Line */}
-                        <div className="w-full bg-neutral-800 rounded-full h-1.5">
-                          <div className="bg-blue-500 h-1.5 rounded-full" style={{ width: `${course.progress}%` }} />
-                        </div>
-                      </div>
-                    </MotionItem>
-                  );
-                })}
+                      </MotionItem>
+                    );
+                  })
+                )}
               </div>
             </div>
           </div>
